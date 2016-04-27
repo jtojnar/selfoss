@@ -27,8 +27,6 @@ selfoss.events.entries = function(e) {
         
          // show entry in popup
         if(selfoss.isSmartphone()) {
-            location.hash = "show";
-            
             // hide nav
             if($('#nav').is(':visible')) {
                 var scrollTop = $(window).scrollTop();
@@ -66,7 +64,6 @@ selfoss.events.entries = function(e) {
                     $('#'+parent.attr('id')).hide();
                 }
                 content.show();
-                location.hash = "";
                 $(window).scrollTop(scrollTop);
                 fullscreen.hide();
             });

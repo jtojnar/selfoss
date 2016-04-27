@@ -27,14 +27,11 @@ selfoss.events = {
         $(window).bind("resize", selfoss.events.resize);
         selfoss.events.resize();
         selfoss.events.updateUnreadBelowTheFold();
-        
+
         // hash change event
         window.onpopstate = selfoss.events.popState;
-        
-        // remove given hash (we just use it for history support)
-        if(location.hash.trim().length!=0)
-            location.hash = "";
 
+        selfoss.events.popState();
     },
     
     
@@ -42,34 +39,14 @@ selfoss.events = {
      * handle History change
      */
     popState: function(e) {
-        // load sources
-        var newLocation = document.location.toString().replace(new RegExp("^" + $("base").attr("href")), "");
-        if(newLocation == "sources") {
-            if (selfoss.activeAjaxReq !== null)
-                selfoss.activeAjaxReq.abort();
-
-            $('#content').addClass('loading').html("");
-            selfoss.activeAjaxReq = $.ajax({
-                url: $('base').attr('href')+'sources',
-                type: 'GET',
-                success: function(data) {
-                    $('#content').html(data);
-                    selfoss.events.sources();
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    if (textStatus == "abort")
-                        return;
-                    else if (errorThrown)
-                        selfoss.showError('Load list error: '+
-                                          textStatus+' '+errorThrown);
-                },
-                complete: function(jqXHR, textStatus) {
-                    $('#content').removeClass('loading');
-                }
-            });
+        var newLocation = document.location.toString().replace(new RegExp('^' + $('base').attr('href')), '');
+        if (newLocation == 'settings/sources') {
+            selfoss.showSettings();
+        } else if ((newLocation = newLocation.replace(/^tag\/(.+)/, '$1')) !== '') {
+            selfoss.showTag(newLocation);
+        } else if ((newLocation = newLocation.replace(/^source\/(.+)/, '$1')) !== '') {
+            selfoss.showSource(newLocation);
         }
-        
-        selfoss.events.lasthash = location.hash;
     },
     
     

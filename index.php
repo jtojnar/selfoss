@@ -68,6 +68,7 @@ $f3->route('GET /tags',          'controllers\Tags->listTags');     // json
 $f3->route('GET /tagslist',      'controllers\Tags->tagslist');     // html
 $f3->route('GET /source/@id',        'controllers\Index->home');        // html
 $f3->route('GET /tag/@id',        'controllers\Index->home');        // html
+$f3->route('GET /settings/sources',        'controllers\Index->home');        // html
 $f3->route('GET /stats',         'controllers\Items->stats');       // json
 $f3->route('GET /sources/stats', 'controllers\Sources->stats');     // json
 

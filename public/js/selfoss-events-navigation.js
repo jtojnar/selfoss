@@ -53,22 +53,8 @@ selfoss.events.navigation = function() {
     
     // tag
     $('#nav-tags > li').unbind('click').click(function () {
-        $('#nav-tags > li').removeClass('active');
-        $('#nav-sources > li').removeClass('active');
-        $(this).addClass('active');
-        
-        selfoss.filter.source = '';
-        selfoss.filter.tag = '';
-        if($(this).hasClass('nav-tags-all')==false)
-            selfoss.filter.tag = $(this).find('span').html();
-            history.pushState(null, null, 'tag/' + encodeURIComponent(selfoss.filter.tag));
-            selfoss.events.popState();
-            
-        selfoss.filter.offset = 0;
-        selfoss.reloadList();
-        
-        if(selfoss.isSmartphone())
-            $('#nav-mobile-settings').click();
+        history.pushState(null, null, 'tag/' + encodeURIComponent($(this).find('span').html()));
+        selfoss.events.popState();
     });
     
     // hide/show tags
@@ -82,20 +68,8 @@ selfoss.events.navigation = function() {
     
     // source
     $('#nav-sources > li').unbind('click').click(function () {
-        $('#nav-tags > li').removeClass('active');
-        $('#nav-sources > li').removeClass('active');
-        $(this).addClass('active');
-        
-        selfoss.filter.tag = '';
-        selfoss.filter.source = $(this).attr('id').substr(6);
-        history.pushState(null, null, 'source/' + encodeURIComponent(selfoss.filter.source));
+        history.pushState(null, null, 'source/' + encodeURIComponent($(this).attr('id').substr(6)));
         selfoss.events.popState();
-            
-        selfoss.filter.offset = 0;
-        selfoss.reloadList();
-        
-        if(selfoss.isSmartphone())
-            $('#nav-mobile-settings').click();
     });
     
     // hide/show sources
@@ -142,16 +116,12 @@ selfoss.events.navigation = function() {
         // show
         if(nav.is(':visible')==false) {
             nav.slideDown(400, function() {
-                location.hash = "nav";
                 $(window).scrollTop(0);
             });
             
         // hide
         } else {
             nav.slideUp(400, function() {
-                if(location.hash=="#nav") {
-                    location.hash = "";
-                }
                 $(window).scrollTop(0);
             });
         }
@@ -197,7 +167,7 @@ selfoss.events.navigation = function() {
         
         // show sources
         $('#nav-settings').unbind('click').click(function () {
-            history.pushState(null, null, 'sources');
+            history.pushState(null, null, 'settings/sources');
             selfoss.events.popState();
             
             if(selfoss.isSmartphone())

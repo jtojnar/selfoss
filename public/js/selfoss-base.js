@@ -157,11 +157,6 @@ var selfoss = {
         if (selfoss.activeAjaxReq !== null)
             selfoss.activeAjaxReq.abort();
 
-        if (location.hash == "#sources") {
-            location.hash = "";
-            return;
-        }
-
         $('.stream-error').css('display', 'block').hide();
         $('#content').addClass('loading').html("");
 
@@ -482,8 +477,75 @@ var selfoss = {
                                     textStatus+' '+errorThrown);
             }
         });
-    }
+    },
 
+
+    /**
+     * Show settings page
+     */
+     showSettings: function() {
+        if (selfoss.activeAjaxReq !== null)
+            selfoss.activeAjaxReq.abort();
+
+        $('#content').addClass('loading').html("");
+        selfoss.activeAjaxReq = $.ajax({
+            url: $('base').attr('href')+'sources',
+            type: 'GET',
+            success: function(data) {
+                $('#content').html(data);
+                selfoss.events.sources();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                if (textStatus == "abort")
+                    return;
+                else if (errorThrown)
+                    selfoss.showError('Load list error: '+
+                                      textStatus+' '+errorThrown);
+            },
+            complete: function(jqXHR, textStatus) {
+                $('#content').removeClass('loading');
+            }
+        });
+     },
+
+     showTag: function(tag) {
+        console.log('changing tag to ' + tag);
+        $('#nav-tags > li').removeClass('active');
+        $('#nav-sources > li').removeClass('active');
+        var currentTag = $('#nav-tags > li[data-tag-name="' + tag + '"]');
+        currentTag.addClass('active');
+
+        selfoss.filter.source = '';
+        selfoss.filter.tag = '';
+        if (currentTag.hasClass('nav-tags-all') === false) {
+            selfoss.filter.tag = tag;
+        }
+
+        selfoss.filter.offset = 0;
+        selfoss.reloadList();
+
+        if (selfoss.isSmartphone()) {
+            $('#nav-mobile-settings').click();
+        }
+     },
+
+     showSource: function(source) {
+        console.log('changing source to ' + source);
+        $('#nav-tags > li').removeClass('active');
+        $('#nav-sources > li').removeClass('active');
+        var currentSource = $('#nav-sources > li#' + source);
+        currentSource.addClass('active');
+
+        selfoss.filter.tag = '';
+        selfoss.filter.source = source;
+
+        selfoss.filter.offset = 0;
+        selfoss.reloadList();
+
+        if (selfoss.isSmartphone()) {
+            $('#nav-mobile-settings').click();
+        }
+     }
 };
 
 selfoss.init();
