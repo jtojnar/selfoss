@@ -61,6 +61,8 @@ selfoss.events.navigation = function() {
         selfoss.filter.tag = '';
         if($(this).hasClass('nav-tags-all')==false)
             selfoss.filter.tag = $(this).find('span').html();
+            history.pushState(null, null, 'tag/' + encodeURIComponent(selfoss.filter.tag));
+            selfoss.events.popState();
             
         selfoss.filter.offset = 0;
         selfoss.reloadList();
@@ -86,6 +88,8 @@ selfoss.events.navigation = function() {
         
         selfoss.filter.tag = '';
         selfoss.filter.source = $(this).attr('id').substr(6);
+        history.pushState(null, null, 'source/' + encodeURIComponent(selfoss.filter.source));
+        selfoss.events.popState();
             
         selfoss.filter.offset = 0;
         selfoss.reloadList();
@@ -193,7 +197,8 @@ selfoss.events.navigation = function() {
         
         // show sources
         $('#nav-settings').unbind('click').click(function () {
-            location.hash = "sources";
+            history.pushState(null, null, 'sources');
+            selfoss.events.popState();
             
             if(selfoss.isSmartphone())
                 $('#nav-mobile-settings').click();

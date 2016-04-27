@@ -5,29 +5,10 @@ RewriteEngine On
 # rule for ACME
 RewriteRule .well-known/(.*) - [L]
 
-# rule for favicons
-RewriteRule !data/favicons/(.*)$ - [C]
-RewriteRule favicons/(.*)$ data/favicons/$1 [L]
-
-# rule for thumbnails
-RewriteRule !data/thumbnails/(.*)$ - [C]
-RewriteRule thumbnails/(.*)$ data/thumbnails/$1 [L]
-
 # rule for front controller
-RewriteCond %{QUERY_STRING} ^(.*)$
-RewriteRule !.(js|ico|gif|jpg|png|css|asc|txt|eot|woff|ttf|ttf|svg|xml)$ index.php?%1
-
-# rule for files
-RewriteRule !favicons/ - [C]
-RewriteRule !thumbnails - [C]
-RewriteRule !public - [C]
-RewriteRule !index.php - [C]
-RewriteRule (.*) public/$1 [L]
-
-# set magic_quotes_gpc as f3 wouldn't start otherwise
-<IfModule mod_php5.c>
-    php_value magic_quotes_gpc "1"
-</IfModule>
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule !\.(js|ico|gif|jpg|png|css|asc|txt|eot|woff|ttf|ttf|svg|xml)$ index.php [L]
 
 # deny requests for config files
 <FilesMatch ".(ini)$">

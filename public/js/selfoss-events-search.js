@@ -26,6 +26,7 @@ selfoss.events.search = function() {
         // show words in top of the page
         var words = splitTerm(term);
         term = joinTerm(words);
+        // history.pushState(null, null, 'search/' + encodeURIComponent(term));
         $('#search-list').html('');
         var itemId = 0;
         $.each(words, function(index, item) {

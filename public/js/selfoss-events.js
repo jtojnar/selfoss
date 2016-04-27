@@ -29,7 +29,7 @@ selfoss.events = {
         selfoss.events.updateUnreadBelowTheFold();
         
         // hash change event
-        window.onhashchange = selfoss.events.hashChange;
+        window.onpopstate = selfoss.events.popState;
         
         // remove given hash (we just use it for history support)
         if(location.hash.trim().length!=0)
@@ -41,27 +41,10 @@ selfoss.events = {
     /**
      * handle History change
      */
-    hashChange: function() {
-        // return to main page
-        if(location.hash.length==0) {
-            // from entry popup
-            if(selfoss.events.lasthash=="#show" && $('#fullscreen-entry').is(':visible')) {
-                $('#fullscreen-entry .entry-close').click();
-            }
-                
-            // from sources
-            if(selfoss.events.lasthash=="#sources") {
-                $('#nav-filter li.active').click();
-            }
-                
-            // from navigation
-            if(selfoss.events.lasthash=="#nav" && $('#nav').is(':visible')) {
-                $('#nav-mobile-settings').click();
-            }
-        }
-        
+    popState: function(e) {
         // load sources
-        if(location.hash=="#sources") {
+        var newLocation = document.location.toString().replace(new RegExp("^" + $("base").attr("href")), "");
+        if(newLocation == "sources") {
             if (selfoss.activeAjaxReq !== null)
                 selfoss.activeAjaxReq.abort();
 

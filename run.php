@@ -15,12 +15,6 @@ if (php_sapi_name() == 'cli-server') {
             return false;
         }
 
-        //redirects to proper location for favicons
-        if ( preg_match( '/(favicons|thumbnails)/', $_SERVER["REQUEST_URI"] ) ) {
-            header( "Location: /data".$_SERVER["REQUEST_URI"] );
-            exit;
-        }
-
         //redirects to proper location for frontend
         header( "Location: /public".$_SERVER["REQUEST_URI"] );
         exit;
