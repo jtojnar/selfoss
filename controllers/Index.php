@@ -99,8 +99,7 @@ class Index extends BaseController {
         $this->view = new \helpers\View();
         $this->view->password = true;
         if(isset($_POST['password'])) {
-            $crypt = \Bcrypt::instance();
-            $this->view->hash = $crypt->hash($_POST['password']);
+            $this->view->hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
         }
         echo $this->view->render('templates/login.phtml');
     }
